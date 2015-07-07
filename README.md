@@ -100,6 +100,23 @@ fsImpl.writeFile('message.txt', 'Hello Node').then(function() {
 Besides the methods from Node.JS's [FS interface](http://nodejs.org/api/fs.html) we also support some custom expansions
 to the interface providing various methods such as recursive methods and S3 specific methods. They are described below.
 
+### s3fs.getPath(path)
+Provides a location by concatenating the bucket with path(s).
+
+* path `String`. _Optional_. The relative path to the working directory or file
+
+```js
+ // Create an instance of S3FS which has a current working directory of `test-folder` within the S3 bucket `test-bucket`
+ var fsImpl = new S3FS(options, 'test-bucket/test-folder');
+ 
+ // Returns location to directory `test-bucket/test-folder/styles
+ var fsImplStyles = fsImpl.getPath('styles');
+ // Returns location to file `test-bucket/test-folder/styles/main.css
+ var fsImplStyles = fsImpl.getPath('styles/main.css');
+ // Returns location to file `test-bucket/test-folder
+ var fsImplStyles = fsImpl.getPath();
+```
+
 ### s3fs.clone(path)
 Provides a clone of the instance of S3FS which has relative access to the specified directory.
 

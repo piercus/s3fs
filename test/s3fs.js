@@ -30,6 +30,7 @@
 
     describe('S3FS Instances', function () {
         var s3Credentials,
+            bucketNamePrefix = 's3fs-clone-test-bucket-',
             bucketName,
             bucketS3fsImpl,
             s3fsImpl;
@@ -43,7 +44,7 @@
                 secretAccessKey: process.env.AWS_SECRET_KEY,
                 region: process.env.AWS_REGION
             };
-            bucketName = 's3fs-clone-test-bucket-' + (Math.random() + '').slice(2, 8);
+            bucketName = bucketNamePrefix + (Math.random() + '').slice(2, 8);
             s3fsImpl = new S3FS(bucketName, s3Credentials);
 
             return s3fsImpl.create();
@@ -96,10 +97,21 @@
             }).to.not.throw();
         });
 
-        it('should be able to retrieve bucket/path', function () {
+        it('should be able to retrieve bucket/path/imAClone', function () {
             var path = s3fsImpl.getPath('imAClone');
             return expect(path).to.contain(bucketNamePrefix).to.contain('imAClone');
         });
+
+        it('should not retrieve bucket/path with undefined', function () {
+            var path = s3fsImpl.getPath(undefined);
+            return expect(path).to.contain(bucketNamePrefix).not.contain('undefined');
+        });
+
+        it('should not retrieve bucket/path with null', function () {
+            var path = s3fsImpl.getPath(null);
+            return expect(path).to.contain(bucketNamePrefix).not.contain('null');
+        });
+
 
         it('should be able to clone s3fs', function () {
             return expect(bucketS3fsImpl.clone('imAClone')).to.not.throw;
