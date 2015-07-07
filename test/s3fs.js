@@ -96,6 +96,11 @@
             }).to.not.throw();
         });
 
+        it('should be able to retrieve bucket/path', function () {
+            var path = s3fsImpl.getPath('imAClone');
+            return expect(path).to.contain(bucketNamePrefix).to.contain('imAClone');
+        });
+
         it('should be able to clone s3fs', function () {
             return expect(bucketS3fsImpl.clone('imAClone')).to.not.throw;
         });
