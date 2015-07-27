@@ -21,5 +21,5 @@ deploy:
     secure: K7UuixO7NUBr8ozT2/hyeBhT86NueFlBYRXa4//n950lPVL7atAuOa97yjFytJIYieBYdvTqFzZygKoXeaG9liFsSQQhYRpZLoX4bEnhKp4CjCRfdNu935cfPs52XXnR94RqUhVi3jXr0/LzHXrz3wXpH2ea5vNNhkr7+TssuXE=
   on:
     tags: true
-    repo: RiptideCloud/s3fs
+    repo: RiptideElements/s3fs
     node: 0.12

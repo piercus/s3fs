@@ -1,6 +1,6 @@
 {
   "name": "s3fs",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Implementation of Node.JS FS interface using Amazon Simple Storage Service (S3).",
   "keywords": [
     "s3fs",
@@ -31,12 +31,7 @@
       "url": "https://github.com/DavidTPate"
     }
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "^2.x",
@@ -48,12 +43,13 @@
     "chai": "^2.x",
     "chai-as-promised": "^4.x",
     "dirty-chai": "^1.x",
-    "nsp": "^1.x",
-    "mocha": "^2.x",
     "istanbul": "^0.x",
     "jscs": "^1.x",
     "jshint": "^2.x",
-    "jsinspect": "^0.x"
+    "jsinspect": "^0.x",
+    "mocha": "^2.x",
+    "nsp": "^1.x",
+    "through2": "^2.0.0"
   },
   "scripts": {
     "test": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks  --timeout 60000 --reporter spec test/ && jshint --show-non-errors . && jscs . && buddy index.js lib test && nsp audit-package"
