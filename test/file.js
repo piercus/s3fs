@@ -29,7 +29,7 @@
     chai.use(chaiAsPromised);
     chai.config.includeStack = true;
 
-    describe.only('S3FS Files', function () {
+    describe('S3FS Files', function () {
         var s3Credentials,
             bucketName,
             bucketS3fsImpl,
