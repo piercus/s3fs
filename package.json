@@ -36,12 +36,12 @@
   "dependencies": {
     "aws-sdk": "^2.x",
     "bluebird": "^2.x",
-    "extend": "^2.x"
+    "extend": "^3.x"
   },
   "devDependencies": {
     "buddy.js": "^0.x",
-    "chai": "^2.x",
-    "chai-as-promised": "^4.x",
+    "chai": "^3.x",
+    "chai-as-promised": "^5.x",
     "dirty-chai": "^1.x",
     "istanbul": "^0.x",
     "jscs": "^1.x",
