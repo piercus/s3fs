@@ -23,12 +23,13 @@
  */
 (function (chai, chaiAsPromised, fs, Promise, S3FS) {
     'use strict';
-    var expect = chai.expect;
+    var expect = chai.expect,
+        through = require('through2');
 
     chai.use(chaiAsPromised);
     chai.config.includeStack = true;
 
-    describe('S3FS Files', function () {
+    describe.only('S3FS Files', function () {
         var s3Credentials,
             bucketName,
             bucketS3fsImpl,
@@ -266,27 +267,47 @@
 
         it('should be able to pipe a file from a stream', function () {
             return expect(new Promise(function (resolve, reject) {
-                fs.createReadStream('./test/mock/example-file.json')
-                    .pipe(bucketS3fsImpl.createWriteStream('test-pipe.json'))
-                    .on('finish', function () {
-                        resolve();
-                    })
+                var fileReadStream = fs.createReadStream('./test/mock/example-file.json'),
+                    s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe.json'),
+                    bytesRead = 0,
+                    calculateBytesWritten = through(function(chunk, enc, cb){
+                        bytesRead += chunk.length;
+                        this.push(chunk);
+                        cb();
+                    });
+                s3fsWriteStream.on('finish', function () {
+                    expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
+                    resolve();
+                })
                     .on('error', function (err) {
                         reject(err);
                     });
+                fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
+
             })).to.eventually.be.fulfilled();
         });
 
         it('should be able to pipe a large file from a stream', function () {
             return expect(new Promise(function (resolve, reject) {
-                fs.createReadStream('./test/mock/large-file.txt')
-                    .pipe(bucketS3fsImpl.createWriteStream('test-pipe-callback.txt'))
+                var fileReadStream = fs.createReadStream('./test/mock/large-file.txt'),
+                    s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe-callback.txt'),
+                    bytesRead = 0,
+                    calculateBytesWritten = through(function(chunk, enc, cb){
+                        bytesRead += chunk.length;
+                        this.push(chunk);
+                        cb();
+                    });
+                s3fsWriteStream
                     .on('finish', function () {
+                        expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
                         resolve();
                     })
                     .on('error', function (err) {
                         reject(err);
                     });
+
+                fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
+
             })).to.eventually.be.fulfilled();
         });
 
