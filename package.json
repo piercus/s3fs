@@ -49,9 +49,9 @@
     "jsinspect": "^0.x",
     "mocha": "^2.x",
     "nsp": "^1.x",
-    "through2": "^2.0.0"
+    "through2": "^2.x"
   },
   "scripts": {
-    "test": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks  --timeout 60000 --reporter spec test/ && jshint --show-non-errors . && jscs . && buddy index.js lib test && nsp audit-package"
+    "test": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks  --timeout 60000 --reporter spec test/ && jshint --show-non-errors . && jscs . && buddy index.js lib test && nsp audit-package && nsp audit-shrinkwrap"
   }
 }
