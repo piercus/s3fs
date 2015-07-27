@@ -112,7 +112,6 @@
             return expect(path).to.contain(bucketNamePrefix).not.contain('null');
         });
 
-
         it('should be able to clone s3fs', function () {
             return expect(bucketS3fsImpl.clone('imAClone')).to.not.throw;
         });

@@ -270,7 +270,7 @@
                 var fileReadStream = fs.createReadStream('./test/mock/example-file.json'),
                     s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe.json'),
                     bytesRead = 0,
-                    calculateBytesWritten = through(function(chunk, enc, cb){
+                    calculateBytesWritten = through(function (chunk, enc, cb) {
                         bytesRead += chunk.length;
                         this.push(chunk);
                         cb();
@@ -292,7 +292,7 @@
                 var fileReadStream = fs.createReadStream('./test/mock/large-file.txt'),
                     s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe-callback.txt'),
                     bytesRead = 0,
-                    calculateBytesWritten = through(function(chunk, enc, cb){
+                    calculateBytesWritten = through(function (chunk, enc, cb) {
                         bytesRead += chunk.length;
                         this.push(chunk);
                         cb();
