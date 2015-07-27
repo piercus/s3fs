@@ -31,12 +31,7 @@
       "url": "https://github.com/DavidTPate"
     }
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "^2.x",
