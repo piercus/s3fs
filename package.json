@@ -11,13 +11,13 @@
     "simple storage service",
     "amazon"
   ],
-  "homepage": "http://github.com/RiptideCloud/s3fs",
+  "homepage": "http://github.com/RiptideElements/s3fs",
   "repository": {
     "type": "git",
-    "url": "git://github.com/RiptideCloud/s3fs.git"
+    "url": "git://github.com/RiptideElements/s3fs.git"
   },
   "bugs": {
-    "url": "http://github.com/RiptideCloud/s3fs/issues"
+    "url": "http://github.com/RiptideElements/s3fs/issues"
   },
   "author": {
     "name": "Jhorlin De Armas",
