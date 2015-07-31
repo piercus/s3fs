@@ -83,8 +83,16 @@
         });
 
         it('should be able to write a large file', function () {
-            var largeFile = fs.readFileSync('./test/mock/large-file.txt');
-            return expect(bucketS3fsImpl.writeFile('write-large.txt', largeFile)).to.eventually.be.fulfilled();
+            var promise = new Promise(function(resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(bucketS3fsImpl.writeFile('write-large.txt', largeFile));
+                });
+
+            });
+            return expect(promise).to.eventually.be.fulfilled();
         });
 
         it('should be able to write a file with encoding', function () {
@@ -99,15 +107,23 @@
         });
 
         it('should be able to write a large file with a callback', function () {
-            var largeFile = fs.readFileSync('./test/mock/large-file.txt');
-            return expect(new Promise(function (resolve, reject) {
-                bucketS3fsImpl.writeFile('write-large-callback.txt', largeFile, function (err, data) {
+            var promise = new Promise(function(resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
                     if (err) {
                         return reject(err);
                     }
-                    resolve(data);
+                    resolve(new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.writeFile('write-large-callback.txt', largeFile, function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
+                        });
+                    }));
                 });
-            })).to.eventually.be.fulfilled();
+
+            });
+            return expect(promise).to.eventually.be.fulfilled();
         });
 
         it('should be able to tell if a file exists', function () {
@@ -215,20 +231,36 @@
         });
 
         it('should be able to write a file from a buffer', function () {
-            var exampleFile = fs.readFileSync('./test/mock/example-file.json');
-            return expect(bucketS3fsImpl.writeFile('test-buffer.json', exampleFile)).to.eventually.be.fulfilled();
-        });
-
-        it('should be able to write a file from a buffer with a callback', function () {
-            var exampleFile = fs.readFileSync('./test/mock/example-file.json');
-            return expect(new Promise(function (resolve, reject) {
-                bucketS3fsImpl.writeFile('test-buffer-callback.json', exampleFile, function (err, data) {
+            var promise = new Promise(function(resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
                     if (err) {
                         return reject(err);
                     }
-                    resolve(data);
+                    resolve(bucketS3fsImpl.writeFile('test-buffer.json', exampleFile));
                 });
-            })).to.eventually.be.fulfilled();
+
+            });
+            return expect(promise).to.eventually.be.fulfilled();
+        });
+
+        it('should be able to write a file from a buffer with a callback', function () {
+            var promise = new Promise(function(resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.writeFile('test-buffer-callback.json', exampleFile, function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
+                        });
+                    }));
+                });
+
+            });
+            return expect(promise).to.eventually.be.fulfilled();
         });
 
         it('should be able to write a file from a stream', function () {

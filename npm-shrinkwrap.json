@@ -3,9 +3,9 @@
   "version": "2.1.0",
   "dependencies": {
     "aws-sdk": {
-      "version": "2.1.40",
-      "from": "aws-sdk@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1.40.tgz",
+      "version": "2.1.42",
+      "from": "aws-sdk@2.1.42",
+      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1.42.tgz",
       "dependencies": {
         "sax": {
           "version": "0.5.3",
