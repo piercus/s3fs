@@ -87,6 +87,21 @@
             });
         });
 
+        it('should be able to read and write a file by going out of the bucket path when using clone', function () {
+            var invalidFileText = '{ "test": "invalid" }';
+            var fileText = '{ "test": "test" }';
+            return Promise.all([
+                bucketS3fsImpl.writeFile('one/test-file.json', invalidFileText),
+                bucketS3fsImpl.writeFile('two/test-file.json', fileText)
+            ]).then(function () {
+                var oneS3fsImpl = bucketS3fsImpl.clone('one');
+                return expect(oneS3fsImpl.readFile('../two/test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.Body.toString()).to.equal(fileText);
+                    return true;
+                });
+            });
+        });
+
         it('should be able to read and write a file by going up a directory', function () {
             var fileText = '{ "test": "test" }';
             return bucketS3fsImpl.writeFile('../some/dir/test-file.json', fileText).then(function () {
@@ -113,8 +128,8 @@
         });
 
         it('should be able to write a large file', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function (err, largeFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -137,8 +152,8 @@
         });
 
         it('should be able to write a large file with a callback', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function (err, largeFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -261,8 +276,8 @@
         });
 
         it('should be able to write a file from a buffer', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function (err, exampleFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -274,8 +289,8 @@
         });
 
         it('should be able to write a file from a buffer with a callback', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function (err, exampleFile) {
                     if (err) {
                         return reject(err);
                     }
