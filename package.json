@@ -1,6 +1,6 @@
 {
   "name": "s3fs",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Implementation of Node.JS FS interface using Amazon Simple Storage Service (S3).",
   "keywords": [
     "s3fs",
@@ -11,13 +11,13 @@
     "simple storage service",
     "amazon"
   ],
-  "homepage": "http://github.com/RiptideCloud/s3fs",
+  "homepage": "http://github.com/RiptideElements/s3fs",
   "repository": {
     "type": "git",
-    "url": "git://github.com/RiptideCloud/s3fs.git"
+    "url": "git://github.com/RiptideElements/s3fs.git"
   },
   "bugs": {
-    "url": "http://github.com/RiptideCloud/s3fs/issues"
+    "url": "http://github.com/RiptideElements/s3fs/issues"
   },
   "author": {
     "name": "Jhorlin De Armas",
@@ -43,8 +43,9 @@
     "chai": "^3.x",
     "chai-as-promised": "^5.x",
     "dirty-chai": "^1.x",
+    "eslint": "^0.24.1",
     "istanbul": "^0.x",
-    "jscs": "^1.x",
+    "jscs": "^2.x",
     "jshint": "^2.x",
     "jsinspect": "^0.x",
     "mocha": "^2.x",
@@ -52,6 +53,6 @@
     "through2": "^2.x"
   },
   "scripts": {
-    "test": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks  --timeout 60000 --reporter spec test/ && jshint --show-non-errors . && jscs . && buddy index.js lib test && nsp audit-package && nsp audit-shrinkwrap"
+    "test": "istanbul cover _mocha -- --check-leaks --timeout=25000 test && jshint --show-non-errors . && eslint .&& jscs . && jsinspect . && buddy --detect-objects index.js ./lib && nsp package && nsp shrinkwrap && istanbul check-coverage --statements 80.95 --branches 76.56 --functions 74.3 --lines 80.95"
   }
 }

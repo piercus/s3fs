@@ -3,9 +3,7 @@
   "ignore": [
     0,
     1,
-    2,
-    3,
-    8
+    2
   ],
-  "reporter": "simple"
+  "reporter": "detailed"
 }
