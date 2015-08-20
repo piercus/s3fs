@@ -67,6 +67,36 @@
             });
         });
 
+        it('should be able to read and write a file by going up a directory in a path', function () {
+            var fileText = '{ "test": "test" }';
+            return bucketS3fsImpl.writeFile('test-file.json', fileText).then(function () {
+                return expect(bucketS3fsImpl.readFile(bucketS3fsImpl.path + '../test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.Body.toString()).to.equal(fileText);
+                    return true;
+                });
+            });
+        });
+
+        it('should be able to read and write a file by going out of the bucket path', function () {
+            var fileText = '{ "test": "test" }';
+            return bucketS3fsImpl.writeFile('../' + bucketS3fsImpl.path.slice(0, -1) + 'mock/' + 'test-file.json', fileText).then(function () {
+                return expect(bucketS3fsImpl.readFile('../' + bucketS3fsImpl.path.slice(0, -1) + 'mock/' + 'test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.Body.toString()).to.equal(fileText);
+                    return true;
+                });
+            });
+        });
+
+        it('should be able to read and write a file by going up a directory', function () {
+            var fileText = '{ "test": "test" }';
+            return bucketS3fsImpl.writeFile('../some/dir/test-file.json', fileText).then(function () {
+                return expect(bucketS3fsImpl.readFile('../some/dir/somethingInvalid/../test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.Body.toString()).to.equal(fileText);
+                    return true;
+                });
+            });
+        });
+
         it('should be able to write a file from a string', function () {
             return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }')).to.eventually.be.fulfilled();
         });
