@@ -242,7 +242,22 @@
                     .then(function () {
                         return bucketS3fsImpl.unlink('test-delete.json');
                     })
-            ).to.eventually.be.fulfilled();
+                    .then(function() {
+                        return bucketS3fsImpl.readdirp('/');
+                    })
+            ).to.eventually.have.lengthOf(0);
+        });
+
+        it('should be able to delete a file when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-delete.json', '{ "test": "test" }')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.unlink('../testDir/test-delete.json');
+                    })
+                    .then(function() {
+                        return bucketS3fsImpl.readdirp('/');
+                    })
+            ).to.eventually.have.lengthOf(0);
         });
 
         it('should be able to delete a file with a callback', function () {
