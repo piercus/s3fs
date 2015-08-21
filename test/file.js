@@ -196,7 +196,22 @@
                     .then(function () {
                         return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json');
                     })
-            ).to.eventually.be.fulfilled();
+                    .then(function() {
+                        return bucketS3fsImpl.exists('test-copy.json');
+                    })
+            ).to.eventually.equal(true);
+        });
+
+        it('should be able to copy an object when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-copy.json', '{}')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.copyFile('../testDir/../testDir/test-copy.json', '../testDir/../testDir/test-copy-dos.json');
+                    })
+                    .then(function() {
+                        return bucketS3fsImpl.exists('testDir/test-copy-dos.json');
+                    })
+            ).to.eventually.equal(true);
         });
 
         it('should be able to copy an object with a callback', function () {
@@ -218,6 +233,15 @@
             return expect(bucketS3fsImpl.writeFile('test-head.json', '{}')
                     .then(function () {
                         return bucketS3fsImpl.headObject('test-head.json');
+                    })
+            ).to.eventually.be.fulfilled();
+        });
+
+        it('should be able to get the head of an object when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-head.json', '{}')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.headObject('../testDir/test-head.json');
                     })
             ).to.eventually.be.fulfilled();
         });
