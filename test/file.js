@@ -87,6 +87,21 @@
             });
         });
 
+        it('should be able to read and write a file by going out of the bucket path when using clone', function () {
+            var invalidFileText = '{ "test": "invalid" }';
+            var fileText = '{ "test": "test" }';
+            return Promise.all([
+                bucketS3fsImpl.writeFile('one/test-file.json', invalidFileText),
+                bucketS3fsImpl.writeFile('two/test-file.json', fileText)
+            ]).then(function () {
+                var oneS3fsImpl = bucketS3fsImpl.clone('one');
+                return expect(oneS3fsImpl.readFile('../two/test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.Body.toString()).to.equal(fileText);
+                    return true;
+                });
+            });
+        });
+
         it('should be able to read and write a file by going up a directory', function () {
             var fileText = '{ "test": "test" }';
             return bucketS3fsImpl.writeFile('../some/dir/test-file.json', fileText).then(function () {
@@ -113,8 +128,8 @@
         });
 
         it('should be able to write a large file', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function (err, largeFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -148,8 +163,8 @@
         });
 
         it('should be able to write a large file with a callback', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/large-file.txt', function(err, largeFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/large-file.txt', function (err, largeFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -192,7 +207,22 @@
                     .then(function () {
                         return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json');
                     })
-            ).to.eventually.be.fulfilled();
+                    .then(function() {
+                        return bucketS3fsImpl.exists('test-copy.json');
+                    })
+            ).to.eventually.equal(true);
+        });
+
+        it('should be able to copy an object when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-copy.json', '{}')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.copyFile('../testDir/../testDir/test-copy.json', '../testDir/../testDir/test-copy-dos.json');
+                    })
+                    .then(function() {
+                        return bucketS3fsImpl.exists('testDir/test-copy-dos.json');
+                    })
+            ).to.eventually.equal(true);
         });
 
         it('should be able to copy an object with a callback', function () {
@@ -218,6 +248,15 @@
             ).to.eventually.be.fulfilled();
         });
 
+        it('should be able to get the head of an object when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-head.json', '{}')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.headObject('../testDir/test-head.json');
+                    })
+            ).to.eventually.be.fulfilled();
+        });
+
         it('should be able to get the head of an object with a callback', function () {
             return expect(bucketS3fsImpl.writeFile('test-head-callback.json', '{}')
                     .then(function () {
@@ -238,7 +277,22 @@
                     .then(function () {
                         return bucketS3fsImpl.unlink('test-delete.json');
                     })
-            ).to.eventually.be.fulfilled();
+                    .then(function() {
+                        return bucketS3fsImpl.readdirp('/');
+                    })
+            ).to.eventually.have.lengthOf(0);
+        });
+
+        it('should be able to delete a file when going up a directory', function () {
+            return expect(bucketS3fsImpl.writeFile('testDir/test-delete.json', '{ "test": "test" }')
+                    .then(function () {
+                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                        return testDirS3fsImpl.unlink('../testDir/test-delete.json');
+                    })
+                    .then(function() {
+                        return bucketS3fsImpl.readdirp('/');
+                    })
+            ).to.eventually.have.lengthOf(0);
         });
 
         it('should be able to delete a file with a callback', function () {
@@ -272,8 +326,8 @@
         });
 
         it('should be able to write a file from a buffer', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function (err, exampleFile) {
                     if (err) {
                         return reject(err);
                     }
@@ -285,8 +339,8 @@
         });
 
         it('should be able to write a file from a buffer with a callback', function () {
-            var promise = new Promise(function(resolve, reject) {
-                fs.readFile('./test/mock/example-file.json', function(err, exampleFile) {
+            var promise = new Promise(function (resolve, reject) {
+                fs.readFile('./test/mock/example-file.json', function (err, exampleFile) {
                     if (err) {
                         return reject(err);
                     }
