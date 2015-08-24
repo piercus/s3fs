@@ -127,8 +127,8 @@
 
         it('should be able to write a file with encoding', function () {
             var fileText = '{ "test": "test" }';
-            var options = {encoding: 'utf16'};
-            return bucketS3fsImpl.writeFile('test-file.json', fileText, {encoding: 'utf16'}).then(function () {
+            var options = {encoding: 'utf8'};
+            return bucketS3fsImpl.writeFile('test-file.json', fileText, options).then(function () {
                 return expect(bucketS3fsImpl.readFile('test-file.json', options)).to.eventually.satisfy(function (data) {
                     expect(data.Body.toString()).to.equal(fileText);
                     return true;
