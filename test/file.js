@@ -116,6 +116,10 @@
             return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }')).to.eventually.be.fulfilled();
         });
 
+        it('shouldn\'t be able to write a file with invalid options', function () {
+            return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }', 1)).to.eventually.be.rejectedWith(TypeError, 'Bad arguments');
+        });
+
         it('should be able to write a file with only encoding from a string', function () {
             return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }', 'utf8')).to.eventually.be.fulfilled();
         });
@@ -142,6 +146,10 @@
 
             });
             return expect(promise).to.eventually.be.fulfilled();
+        });
+
+        it('shouldn\'t be able to read a file with invalid options', function () {
+            return expect(bucketS3fsImpl.readFile('test-file.json', 1)).to.eventually.be.rejectedWith(TypeError, 'Bad arguments');
         });
 
         it('should be able to write a file with utf8 encoding', function () {
