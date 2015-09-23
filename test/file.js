@@ -180,12 +180,12 @@
                     if (err) {
                         return reject(err);
                     }
-                    resolve(new Promise(function (resolve, reject) {
-                        bucketS3fsImpl.writeFile('write-large-callback.txt', largeFile, function (err, data) {
-                            if (err) {
-                                return reject(err);
+                    resolve(new Promise(function (writeResolve, writeReject) {
+                        bucketS3fsImpl.writeFile('write-large-callback.txt', largeFile, function (writeErr, data) {
+                            if (writeErr) {
+                                return writeReject(writeErr);
                             }
-                            resolve(data);
+                            writeResolve(data);
                         });
                     }));
                 });
@@ -356,12 +356,12 @@
                     if (err) {
                         return reject(err);
                     }
-                    resolve(new Promise(function (resolve, reject) {
-                        bucketS3fsImpl.writeFile('test-buffer-callback.json', exampleFile, function (err, data) {
-                            if (err) {
-                                return reject(err);
+                    resolve(new Promise(function (writeResolve, writeReject) {
+                        bucketS3fsImpl.writeFile('test-buffer-callback.json', exampleFile, function (writeErr, data) {
+                            if (writeErr) {
+                                return writeReject(writeErr);
                             }
-                            resolve(data);
+                            writeResolve(data);
                         });
                     }));
                 });
