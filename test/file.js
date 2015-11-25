@@ -112,6 +112,16 @@
             });
         });
 
+        it('should be able to write a file with options', function () {
+            var fileText = '{ "test": "test" }';
+            return bucketS3fsImpl.writeFile('../some/dir/test-file.json', fileText, {ContentType: 'application/json'}).then(function () {
+                return expect(bucketS3fsImpl.readFile('../some/dir/somethingInvalid/../test-file.json')).to.eventually.satisfy(function (data) {
+                    expect(data.ContentType).to.equal('application/json');
+                    return true;
+                });
+            });
+        });
+
         it('should be able to write a file from a string', function () {
             return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }')).to.eventually.be.fulfilled();
         });
@@ -196,129 +206,129 @@
 
         it('should be able to tell if a file exists', function () {
             return expect(bucketS3fsImpl.writeFile('test-exists.json', '{ "test": "test" }')
-                    .then(function () {
-                        return bucketS3fsImpl.exists('test-exists.json');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.exists('test-exists.json');
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to tell if a file exists with a callback', function () {
             return expect(bucketS3fsImpl.writeFile('test-exists-callback.json', '{ "test": "test" }')
-                    .then(function () {
-                        return new Promise(function (resolve) {
-                            bucketS3fsImpl.exists('test-exists-callback.json', function (exists) {
-                                resolve(exists);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve) {
+                        bucketS3fsImpl.exists('test-exists-callback.json', function (exists) {
+                            resolve(exists);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.equal(true);
         });
 
         it('should be able to copy an object', function () {
             return expect(bucketS3fsImpl.writeFile('test-copy.json', '{}')
-                    .then(function () {
-                        return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json');
-                    })
-                    .then(function () {
-                        return bucketS3fsImpl.exists('test-copy.json');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json');
+                })
+                .then(function () {
+                    return bucketS3fsImpl.exists('test-copy.json');
+                })
             ).to.eventually.equal(true);
         });
 
         it('should be able to copy an object when going up a directory', function () {
             return expect(bucketS3fsImpl.writeFile('testDir/test-copy.json', '{}')
-                    .then(function () {
-                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
-                        return testDirS3fsImpl.copyFile('../testDir/../testDir/test-copy.json', '../testDir/../testDir/test-copy-dos.json');
-                    })
-                    .then(function () {
-                        return bucketS3fsImpl.exists('testDir/test-copy-dos.json');
-                    })
+                .then(function () {
+                    var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                    return testDirS3fsImpl.copyFile('../testDir/../testDir/test-copy.json', '../testDir/../testDir/test-copy-dos.json');
+                })
+                .then(function () {
+                    return bucketS3fsImpl.exists('testDir/test-copy-dos.json');
+                })
             ).to.eventually.equal(true);
         });
 
         it('should be able to copy an object with a callback', function () {
             return expect(bucketS3fsImpl.writeFile('test-copy-callback.json', '{}')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.copyFile('test-copy-callback.json', 'test-copy-callback-dos.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                                resolve(data);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.copyFile('test-copy-callback.json', 'test-copy-callback-dos.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to get the head of an object', function () {
             return expect(bucketS3fsImpl.writeFile('test-head.json', '{}')
-                    .then(function () {
-                        return bucketS3fsImpl.headObject('test-head.json');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.headObject('test-head.json');
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to get the head of an object when going up a directory', function () {
             return expect(bucketS3fsImpl.writeFile('testDir/test-head.json', '{}')
-                    .then(function () {
-                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
-                        return testDirS3fsImpl.headObject('../testDir/test-head.json');
-                    })
+                .then(function () {
+                    var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                    return testDirS3fsImpl.headObject('../testDir/test-head.json');
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to get the head of an object with a callback', function () {
             return expect(bucketS3fsImpl.writeFile('test-head-callback.json', '{}')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.headObject('test-head-callback.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                                resolve(data);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.headObject('test-head-callback.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to delete a file', function () {
             return expect(bucketS3fsImpl.writeFile('test-delete.json', '{ "test": "test" }')
-                    .then(function () {
-                        return bucketS3fsImpl.unlink('test-delete.json');
-                    })
-                    .then(function () {
-                        return bucketS3fsImpl.readdirp('/');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.unlink('test-delete.json');
+                })
+                .then(function () {
+                    return bucketS3fsImpl.readdirp('/');
+                })
             ).to.eventually.have.lengthOf(0);
         });
 
         it('should be able to delete a file when going up a directory', function () {
             return expect(bucketS3fsImpl.writeFile('testDir/test-delete.json', '{ "test": "test" }')
-                    .then(function () {
-                        var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
-                        return testDirS3fsImpl.unlink('../testDir/test-delete.json');
-                    })
-                    .then(function () {
-                        return bucketS3fsImpl.readdirp('/');
-                    })
+                .then(function () {
+                    var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
+                    return testDirS3fsImpl.unlink('../testDir/test-delete.json');
+                })
+                .then(function () {
+                    return bucketS3fsImpl.readdirp('/');
+                })
             ).to.eventually.have.lengthOf(0);
         });
 
         it('should be able to delete a file with a callback', function () {
             return expect(bucketS3fsImpl.writeFile('test-delete-callback.json', '{ "test": "test" }')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.unlink('test-delete-callback.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                                resolve(data);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.unlink('test-delete-callback.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.fulfilled();
         });
 
@@ -415,15 +425,67 @@
                         cb();
                     });
                 s3fsWriteStream.on('finish', function () {
-                    expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
-                    resolve();
-                })
+                        expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
+                        resolve();
+                    })
                     .on('error', function (err) {
                         reject(err);
                     });
                 fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
 
             })).to.eventually.be.fulfilled();
+        });
+
+        it('should be able to pipe a small file from a stream with options', function () {
+            return expect(new Promise(function (resolve, reject) {
+                var fileReadStream = fs.createReadStream('./test/mock/example-file.json'),
+                    s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe.json', {ContentType: 'application/json'}),
+                    bytesRead = 0,
+                    calculateBytesWritten = through(function (chunk, enc, cb) {
+                        bytesRead += chunk.length;
+                        this.push(chunk);
+                        cb();
+                    });
+                s3fsWriteStream.on('finish', function () {
+                        expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
+                        resolve();
+                    })
+                    .on('error', function (err) {
+                        reject(err);
+                    });
+                fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
+            }).then(function () {
+                return bucketS3fsImpl.readFile('test-pipe.json');
+            })).to.eventually.satisfy(function (data) {
+                expect(data.ContentType).to.equal('application/json');
+                return true;
+            });
+        });
+
+        it('should be able to pipe a large file from a stream with options', function () {
+            return expect(new Promise(function (resolve, reject) {
+                var fileReadStream = fs.createReadStream('./test/mock/large-file.txt'),
+                    s3fsWriteStream = bucketS3fsImpl.createWriteStream('test-pipe-large.json', {ContentType: 'application/json'}),
+                    bytesRead = 0,
+                    calculateBytesWritten = through(function (chunk, enc, cb) {
+                        bytesRead += chunk.length;
+                        this.push(chunk);
+                        cb();
+                    });
+                s3fsWriteStream.on('finish', function () {
+                        expect(s3fsWriteStream).to.have.property('bytesWritten', bytesRead);
+                        resolve();
+                    })
+                    .on('error', function (err) {
+                        reject(err);
+                    });
+                fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
+            }).then(function () {
+                return bucketS3fsImpl.readFile('test-pipe-large.json');
+            })).to.eventually.satisfy(function (data) {
+                expect(data.ContentType).to.equal('application/json');
+                return true;
+            });
         });
 
         it('should be able to pipe a large file from a stream', function () {
@@ -486,106 +548,106 @@
 
         it('should be able to read a file as a stream', function () {
             return expect(bucketS3fsImpl.writeFile('test-read-stream.json', '{ "test": "test" }')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            var data = '';
-                            bucketS3fsImpl.createReadStream('test-read-stream.json')
-                                .on('data', function (chunk) {
-                                    data += chunk;
-                                })
-                                .on('end', function () {
-                                    expect(data).to.be.equal('{ "test": "test" }');
-                                    resolve();
-                                })
-                                .on('error', function (err) {
-                                    reject(err);
-                                });
-                        });
-                    })
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        var data = '';
+                        bucketS3fsImpl.createReadStream('test-read-stream.json')
+                            .on('data', function (chunk) {
+                                data += chunk;
+                            })
+                            .on('end', function () {
+                                expect(data).to.be.equal('{ "test": "test" }');
+                                resolve();
+                            })
+                            .on('error', function (err) {
+                                reject(err);
+                            });
+                    });
+                })
             ).to.eventually.be.fulfilled();
         });
 
         it('should be able to read a file with a callback', function () {
             var contents = '{ "test": "test" }';
             return expect(bucketS3fsImpl.writeFile('test-read-file-cb.json', contents)
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.readFile('test-read-file-cb.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.readFile('test-read-file-cb.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
 
-                                resolve(data);
-                            });
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.instanceOf(Buffer).and.to.satisfy(function (data) {
-                    expect(data.toString()).to.equal(contents);
-                    return true;
-                });
+                expect(data.toString()).to.equal(contents);
+                return true;
+            });
         });
 
         it('should be able to read a file with only encoding and a callback', function () {
             var contents = '{ "test": "test" }';
             return expect(bucketS3fsImpl.writeFile('test-read-file-encoding-cb.json', contents)
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.readFile('test-read-file-encoding-cb.json', 'utf8', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.readFile('test-read-file-encoding-cb.json', 'utf8', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
 
-                                resolve(data);
-                            });
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.a('string').and.equal(contents);
         });
 
         it('should be able to read a file with encoding in options and a callback', function () {
             var contents = '{ "test": "test" }';
             return expect(bucketS3fsImpl.writeFile('test-read-file-encoding-cb.json', contents)
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.readFile('test-read-file-encoding-cb.json', {encoding: 'utf8'}, function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.readFile('test-read-file-encoding-cb.json', {encoding: 'utf8'}, function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
 
-                                resolve(data);
-                            });
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.be.a('string').and.equal(contents);
         });
 
         it('should be able to retrieve the stats of a file - stat(2)', function () {
             return expect(bucketS3fsImpl.writeFile('test-stat.json', '{ "test": "test" }')
-                    .then(function () {
-                        return bucketS3fsImpl.stat('test-stat.json');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.stat('test-stat.json');
+                })
             ).to.eventually.satisfy(function (stats) {
-                    expect(stats.isFile()).to.be.true();
-                    return true;
-                });
+                expect(stats.isFile()).to.be.true();
+                return true;
+            });
         });
 
         it('should be able to retrieve the stats of a file with a callback - stat(2)', function () {
             return expect(bucketS3fsImpl.writeFile('test-stat-callback.json', '{ "test": "test" }')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.stat('test-stat-callback.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                                resolve(data);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.stat('test-stat-callback.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.satisfy(function (stats) {
-                    expect(stats.isFile()).to.be.true();
-                    return true;
-                });
+                expect(stats.isFile()).to.be.true();
+                return true;
+            });
         });
 
         it('shouldn\'t be able to retrieve the stats of a file that doesn\'t exist - stat(2)', function () {
@@ -605,31 +667,31 @@
 
         it('should be able to retrieve the stats of a file - lstat(2)', function () {
             return expect(bucketS3fsImpl.writeFile('test-lstat.json', '{ "test": "test" }')
-                    .then(function () {
-                        return bucketS3fsImpl.lstat('test-lstat.json');
-                    })
+                .then(function () {
+                    return bucketS3fsImpl.lstat('test-lstat.json');
+                })
             ).to.eventually.satisfy(function (stats) {
-                    expect(stats.isFile()).to.be.true();
-                    return true;
-                });
+                expect(stats.isFile()).to.be.true();
+                return true;
+            });
         });
 
         it('should be able to retrieve the stats of a file with a callback - lstat(2)', function () {
             return expect(bucketS3fsImpl.writeFile('test-lstat-callback.json', '{ "test": "test" }')
-                    .then(function () {
-                        return new Promise(function (resolve, reject) {
-                            bucketS3fsImpl.lstat('test-lstat-callback.json', function (err, data) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                                resolve(data);
-                            });
+                .then(function () {
+                    return new Promise(function (resolve, reject) {
+                        bucketS3fsImpl.lstat('test-lstat-callback.json', function (err, data) {
+                            if (err) {
+                                return reject(err);
+                            }
+                            resolve(data);
                         });
-                    })
+                    });
+                })
             ).to.eventually.satisfy(function (stats) {
-                    expect(stats.isFile()).to.be.true();
-                    return true;
-                });
+                expect(stats.isFile()).to.be.true();
+                return true;
+            });
         });
 
     });
