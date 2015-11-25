@@ -1,6 +1,6 @@
 {
   "name": "s3fs",
-  "version": "2.4.0",
+  "version": "2.3.0",
   "description": "Implementation of Node.JS FS interface using Amazon Simple Storage Service (S3).",
   "keywords": [
     "s3fs",
@@ -34,25 +34,28 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "aws-sdk": "^2.x",
-    "bluebird": "^2.x",
-    "extend": "^3.x"
+    "aws-sdk": "~2.x",
+    "bluebird": "~2.x",
+    "extend": "~3.x"
   },
   "devDependencies": {
-    "buddy.js": "^0.x",
-    "chai": "^3.x",
-    "chai-as-promised": "^5.x",
-    "dirty-chai": "^1.x",
-    "eslint": "^0.24.1",
-    "istanbul": "^0.x",
-    "jscs": "^2.x",
-    "jshint": "^2.x",
-    "jsinspect": "^0.x",
-    "mocha": "^2.x",
-    "nsp": "^2.x",
-    "through2": "^2.x"
+    "buddy.js": "~0.x",
+    "chai": "~3.x",
+    "chai-as-promised": "~5.x",
+    "dirty-chai": "~1.x",
+    "eslint": "~1.x",
+    "istanbul": "~0.x",
+    "jscs": "~2.x",
+    "jsinspect": "~0.x",
+    "mocha": "~2.x",
+    "nsp": "~1.x",
+    "through2": "~2.x"
   },
   "scripts": {
-    "test": "istanbul cover _mocha -- --check-leaks --timeout=25000 test && jshint --show-non-errors . && eslint .&& jscs . && jsinspect . && buddy --detect-objects index.js ./lib && nsp check && istanbul check-coverage --statements 80.95 --branches 76.56 --functions 74.3 --lines 80.95"
+    "lint": "eslint . && jscs . && jsinspect . && buddy --detect-objects index.js ./lib",
+    "security": "nsp package && nsp shrinkwrap",
+    "cover": "istanbul cover _mocha -- --check-leaks --recursive --timeout=25000 test && istanbul check-coverage --statements 80.95 --branches 76.56 --functions 74.3 --lines 80.95",
+    "test": "mocha --check-leaks --recursive --timeout=25000 test",
+    "test-ci": "npm run lint && npm run security && npm run cover"
   }
 }
