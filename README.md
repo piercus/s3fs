@@ -107,7 +107,7 @@ Provides a location by concatenating the bucket with path(s).
 
 ```js
  // Create an instance of S3FS which has a current working directory of `test-folder` within the S3 bucket `test-bucket`
- var fsImpl = new S3FS(options, 'test-bucket/test-folder');
+ var fsImpl = new S3FS('test-bucket/test-folder', options);
  
  // Returns location to directory `test-bucket/test-folder/styles
  var fsImplStyles = fsImpl.getPath('styles');
@@ -247,7 +247,7 @@ Adds/Updates a lifecycle on a bucket.
 * callback `Function`. _Optional_. Callback to be used, if not provided will return a Promise
 
 ```js
-var fsImpl = new S3FS(options, 'test-bucket');
+var fsImpl = new S3FS('test-bucket', options);
 // Remove the Cached contents in the `/cache` directory each day.
 fsImpl.putBucketLifecycle('expire cache', 'cache', 1).then(function() {
   // Bucket Lifecycle was successfully added/updated
