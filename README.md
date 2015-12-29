@@ -63,6 +63,30 @@ The methods below from Node.JS's [FS interface](http://nodejs.org/api/fs.html) a
 matching the signature and functionality of the `fs` module. All of the methods support either usage through callbacks
 or promises. There isn't any support for synchronous actions currently as there isn't a need.
 
+* [fs.createReadStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+* [fs.createWriteStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options)
+* [fs.exists(path, callback)](http://nodejs.org/api/fs.html#fs_fs_exists_path_callback)
+* [fs.stat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_stat_path_callback)
+* [fs.lstat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_lstat_path_callback)
+* [fs.mkdir(path, [mode], callback)](http://nodejs.org/api/fs.html#fs_fs_mkdir_path_mode_callback)
+* [fs.readdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback)
+* [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback)
+* [fs.rmdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_rmdir_path_callback)
+* [fs.unlink(path, callback)](http://nodejs.org/api/fs.html#fs_fs_unlink_path_callback)
+* [fs.writeFile(filename, data, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_writefile_filename_data_options_callback)
+
+### Constructor Details
+Creating an instance of `S3fs` takes in the `bucketPath` and `options` which are passed on to the [S3 constructor](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property).
+
+```js
+var bucketPath = 'mySuperCoolBucket';
+var s3Options = {
+  region: 'us-east-1',
+  
+};
+var fsImpl = new S3FS(bucketPath, s3Options);
+```
+
 ### Example Callback Usage
 ```js
 var S3FS = require('s3fs');
@@ -83,18 +107,6 @@ fsImpl.writeFile('message.txt', 'Hello Node').then(function() {
   throw reason;
 });
 ```
-
-* [fs.createReadStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
-* [fs.createWriteStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options)
-* [fs.exists(path, callback)](http://nodejs.org/api/fs.html#fs_fs_exists_path_callback)
-* [fs.stat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_stat_path_callback)
-* [fs.lstat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_lstat_path_callback)
-* [fs.mkdir(path, [mode], callback)](http://nodejs.org/api/fs.html#fs_fs_mkdir_path_mode_callback)
-* [fs.readdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback)
-* [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback)
-* [fs.rmdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_rmdir_path_callback)
-* [fs.unlink(path, callback)](http://nodejs.org/api/fs.html#fs_fs_unlink_path_callback)
-* [fs.writeFile(filename, data, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_writefile_filename_data_options_callback)
 
 ## Custom Supported Methods
 Besides the methods from Node.JS's [FS interface](http://nodejs.org/api/fs.html) we also support some custom expansions
