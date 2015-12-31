@@ -151,8 +151,9 @@ the bucket originally provided.
 
 ```js
 var fsImpl = new S3FS('test-bucket', options);
-fsImpl.copyFile('test-folder/test-file.txt', 'other-folder/test-file.txt').then(function() {
+fsImpl.copyFile('test-folder/test-file.txt', 'other-folder/test-file.txt').then(function(data) {
   // File was successfully copied
+  // Data contains details such as the `ETag` about the object. See [AWS SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#copyObject-property) for details.
 }, function(reason) {
   // Something went wrong
 });

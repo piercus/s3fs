@@ -227,7 +227,13 @@
         it('should be able to copy an object', function () {
             return expect(bucketS3fsImpl.writeFile('test-copy.json', '{}')
                 .then(function () {
-                    return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json');
+                    return expect(bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json')).to.eventually.satisfy(function(data) {
+                        expect(data.ETag).to.equal(data.CopyObjectResult.ETag);
+                        expect(data.CopyObjectResult.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
+                        expect(data.LastModified).to.equal(data.CopyObjectResult.LastModified);
+                        expect(data.CopyObjectResult.LastModified).to.be.ok();
+                        return true;
+                    });
                 })
                 .then(function () {
                     return bucketS3fsImpl.exists('test-copy.json');
@@ -259,7 +265,13 @@
                         });
                     });
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.satisfy(function(data) {
+                expect(data.ETag).to.equal(data.CopyObjectResult.ETag);
+                expect(data.CopyObjectResult.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
+                expect(data.LastModified).to.equal(data.CopyObjectResult.LastModified);
+                expect(data.CopyObjectResult.LastModified).to.be.ok();
+                return true;
+            });
         });
 
         it('should be able to get the head of an object', function () {
