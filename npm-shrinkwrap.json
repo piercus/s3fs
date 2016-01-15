@@ -1,11 +1,11 @@
 {
   "name": "s3fs",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "dependencies": {
     "aws-sdk": {
-      "version": "2.2.23",
+      "version": "2.2.30",
       "from": "aws-sdk@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.2.23.tgz"
+      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.2.30.tgz"
     },
     "bluebird": {
       "version": "2.10.2",

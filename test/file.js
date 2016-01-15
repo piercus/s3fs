@@ -279,7 +279,14 @@
                 .then(function () {
                     return bucketS3fsImpl.headObject('test-head.json');
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.satisfy(function(data) {
+                expect(data.AcceptRanges).to.equal('bytes');
+                expect(data.ContentLength).to.equal('2');
+                expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
+                expect(data.ContentType).to.equal('application/octet-stream');
+                expect(data.LastModified).to.be.ok();
+                return true;
+            });
         });
 
         it('should be able to get the head of an object when going up a directory', function () {
@@ -288,7 +295,14 @@
                     var testDirS3fsImpl = bucketS3fsImpl.clone('testDir');
                     return testDirS3fsImpl.headObject('../testDir/test-head.json');
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.satisfy(function(data) {
+                expect(data.AcceptRanges).to.equal('bytes');
+                expect(data.ContentLength).to.equal('2');
+                expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
+                expect(data.ContentType).to.equal('application/octet-stream');
+                expect(data.LastModified).to.be.ok();
+                return true;
+            });
         });
 
         it('should be able to get the head of an object with a callback', function () {
@@ -303,7 +317,14 @@
                         });
                     });
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.satisfy(function(data) {
+                expect(data.AcceptRanges).to.equal('bytes');
+                expect(data.ContentLength).to.equal('2');
+                expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
+                expect(data.ContentType).to.equal('application/octet-stream');
+                expect(data.LastModified).to.be.ok();
+                return true;
+            });
         });
 
         it('should be able to delete a file', function () {
