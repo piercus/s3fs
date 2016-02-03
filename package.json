@@ -1,6 +1,6 @@
 {
   "name": "s3fs",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "Implementation of Node.JS FS interface using Amazon Simple Storage Service (S3).",
   "keywords": [
     "s3fs",
@@ -35,7 +35,7 @@
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "~2.x",
-    "bluebird": "~2.x",
+    "bluebird": "~3.x",
     "extend": "~3.x"
   },
   "devDependencies": {
