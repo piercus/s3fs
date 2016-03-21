@@ -1,3 +1,4 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
@@ -22,7 +23,6 @@
  * SOFTWARE.
  */
 (function (chai, chaiAsPromised, Promise, S3FS) {
-    'use strict';
     var expect = chai.expect;
 
     chai.use(chaiAsPromised);
