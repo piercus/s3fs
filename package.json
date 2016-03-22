@@ -34,7 +34,7 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "aws-sdk": "~2.x",
+    "aws-sdk": "~2.2.46",
     "bluebird": "~3.x",
     "extend": "~3.x"
   },
