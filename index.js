@@ -1,3 +1,4 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
@@ -22,6 +23,5 @@
  * SOFTWARE.
  */
 (function (module, s3fs) {
-    'use strict';
     module.exports = s3fs;
 }(module, require('./lib/s3fs')));
