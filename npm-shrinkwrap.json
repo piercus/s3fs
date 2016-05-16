@@ -1,21 +1,26 @@
 {
   "name": "s3fs",
-  "version": "2.4.5",
+  "version": "2.4.7",
   "dependencies": {
     "aws-sdk": {
-      "version": "2.2.45",
-      "from": "aws-sdk@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.2.45.tgz"
+      "version": "2.3.11",
+      "from": "aws-sdk@>=2.3.11 <2.4.0",
+      "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.3.11.tgz"
     },
     "bluebird": {
-      "version": "3.3.4",
-      "from": "bluebird@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.3.4.tgz"
+      "version": "3.3.5",
+      "from": "bluebird@>=3.3.5 <3.4.0",
+      "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.3.5.tgz"
     },
     "extend": {
       "version": "3.0.0",
       "from": "extend@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.0.tgz"
+    },
+    "jmespath": {
+      "version": "0.15.0",
+      "from": "jmespath@0.15.0",
+      "resolved": "https://registry.npmjs.org/jmespath/-/jmespath-0.15.0.tgz"
     },
     "lodash": {
       "version": "3.5.0",
