@@ -47,7 +47,7 @@
     "istanbul": "~0.4.3",
     "jscs": "~3.0.3",
     "jsinspect": "~0.x",
-    "mocha": "~2.x",
+    "mocha": "~2.5.2",
     "nsp": "~2.4.0",
     "through2": "~2.x"
   },
