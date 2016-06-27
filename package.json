@@ -48,7 +48,7 @@
     "jscs": "~3.0.5",
     "jsinspect": "~0.x",
     "mocha": "~2.5.3",
-    "nsp": "~2.4.0",
+    "nsp": "~2.5.0",
     "through2": "~2.x"
   },
   "scripts": {
