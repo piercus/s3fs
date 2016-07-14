@@ -7,8 +7,8 @@ node_js:
 env:
   global:
   - LOG_LEVEL=error
-  - secure: Nto0DJdtm5X9c0UxO3WDc1UJcDMr6iqonzEg8jsbv6WBcKx4QuZTwJQevKxqb6Tn3kiY4EAKMxZkBPUEwAtOSjDNXogOS1WbZZ+8KxcHB5eMqAtRUR0cT4MnyHFxHD/yKzUMlpMLPw9sBRJVXyj1S3oZtgMyvgrxvXbdi6gFCnI=
-  - secure: TOpGyGYih+aDCljsnk93VEe+FRh8Ehh56Ycs1vFglWbC5HukgQ6gjrgpn28JUN1pV+XYIhfuDcvRNXLOBP4mX80c3LwClOh4AXzOf1VJcJyIGRVMCuCK9UgS37e/RsxgFczcu/MzJG/rCbt0lR46t6FQhqEBzmsbJV0oL5zA94M=
+  - secure: P36MyVp073Zq6pDAgxLo3ZS1mJGUGtdS/uAsX/Wz5+OJ0iipjiib/y2opqn1jyZmS0iuszN6NY0ceUp+K6KuXy6ifvmm+V7+nLiBUFirDdzqNyXEgC+l5Gz//tyX0jBxRTMUt4V8ACJM/OuAdIcyQUO3cLfzzEy5m+Oy33qH9HE=
+  - secure: QRrIUOnc4JeeqRe//dqrDARzG2bwFHUrho4x+l+D9DgoxG6igLY3htSKBBS8c97YcRderW5EeQp5jliX7Mp3G2oCX2z7gzN+16I6mMB4GMXISxtv4dW+6gnU2qfLK433Nr7VG+qWQb5i/JXEYzbEfOrd0k3a7lxvTHWjtp++TKk=
 matrix:
   fast_finish: true
 script: npm run test-ci

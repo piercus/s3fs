@@ -29,23 +29,14 @@
     chai.config.includeStack = true;
 
     describe('S3FS Instances', function () {
-        var s3Credentials,
-            bucketNamePrefix = 's3fs-clone-test-bucket-',
+        var bucketNamePrefix = 's3fs-clone-test-bucket-',
             bucketName,
             bucketS3fsImpl,
             s3fsImpl;
 
         before(function () {
-            if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_KEY) {
-                throw new Error('Both an AWS Access Key ID and Secret Key are required');
-            }
-            s3Credentials = {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_KEY,
-                region: process.env.AWS_REGION
-            };
             bucketName = bucketNamePrefix + (Math.random() + '').slice(2, 8);
-            s3fsImpl = new S3FS(bucketName, s3Credentials);
+            s3fsImpl = new S3FS(bucketName);
 
             return s3fsImpl.create();
         });
@@ -93,7 +84,7 @@
 
         it('shouldn\'t be able to instantiate S3FS without a secretAccessKey', function () {
             return expect(function () {
-                S3FS('bucket', {accessKeyId: 'test'});
+                S3FS('bucket', { accessKeyId: 'test' });
             }).to.not.throw();
         });
 
@@ -118,14 +109,14 @@
 
         it('should be able to clone s3fs then read a file', function () {
             return expect(bucketS3fsImpl.writeFile('imAClone/test-file.json', '{ "test": "test" }')
-                    .then(function () {
-                        var s3fsClone = bucketS3fsImpl.clone('imAClone');
-                        return s3fsClone.readFile('test-file.json');
-                    })
+                .then(function () {
+                    var s3fsClone = bucketS3fsImpl.clone('imAClone');
+                    return s3fsClone.readFile('test-file.json');
+                })
             ).to.eventually.satisfy(function (file) {
-                    expect(file.Body.toString()).to.be.equal('{ "test": "test" }');
-                    return true;
-                });
+                expect(file.Body.toString()).to.be.equal('{ "test": "test" }');
+                return true;
+            });
         });
 
     });

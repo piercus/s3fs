@@ -30,22 +30,13 @@
     chai.config.includeStack = true;
 
     describe('S3FS Files', function () {
-        var s3Credentials,
-            bucketName,
+        var bucketName,
             bucketS3fsImpl,
             s3fsImpl;
 
         before(function () {
-            if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_KEY) {
-                throw new Error('Both an AWS Access Key ID and Secret Key are required');
-            }
-            s3Credentials = {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_KEY,
-                region: process.env.AWS_REGION
-            };
             bucketName = 's3fs-file-test-bucket-' + (Math.random() + '').slice(2, 8);
-            s3fsImpl = new S3FS(bucketName, s3Credentials);
+            s3fsImpl = new S3FS(bucketName);
 
             return s3fsImpl.create();
         });
