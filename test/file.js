@@ -265,6 +265,21 @@
             });
         });
 
+        it('should be able to copy a file with options', function () {
+            return bucketS3fsImpl.writeFile('test-copy.json', '{}')
+                .then(function () {
+                    var options = { ContentType: 'application/json', MetadataDirective: 'REPLACE', Metadata: { Somewhere: 'Over the rainbow' } };
+                    return bucketS3fsImpl.copyFile('test-copy.json', 'test-copy-dos.json', options);
+                })
+                .then(function () {
+                    return expect(bucketS3fsImpl.readFile('test-copy-dos.json')).to.eventually.satisfy(function (data) {
+                        expect(data.ContentType).to.equal('application/json');
+                        expect(data.Metadata.somewhere).to.equal('Over the rainbow');
+                        return true;
+                    });
+                });
+        });
+
         it('should be able to get the head of an object', function () {
             return expect(bucketS3fsImpl.writeFile('test-head.json', '{}')
                 .then(function () {

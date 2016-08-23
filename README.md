@@ -141,12 +141,13 @@ var fsImpl = new S3FS('test-bucket/test-folder', options);
 var fsImplStyles = fsImpl.clone('styles');
 ```
 
-### s3fs.copyFile(sourcePath, destinationPath[, callback])
+### s3fs.copyFile(sourcePath, destinationPath[, options, callback])
 Allows a file to be copied from one path to another path within the same bucket. Paths are relative to
 the bucket originally provided.
 
 * sourceFile `String`. **Required**. Relative path to the source file
 * destinationFile `String`. **Required**. Relative path to the destination file
+* options `Object`. _Optional_. The options to be used when copying the file. See [AWS SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#copyObject-property)
 * callback `Function`. _Optional_. Callback to be used, if not provided will return a Promise
 
 ```js
