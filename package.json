@@ -35,7 +35,7 @@
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "~2.5.4",
-    "bluebird": "~3.4.3",
+    "bluebird": "~3.4.5",
     "extend": "~3.x"
   },
   "devDependencies": {
