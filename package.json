@@ -50,6 +50,7 @@
     "mocha": "~3.1.2",
     "nsp": "~2.6.2",
     "through2": "~2.x",
+    "semantic-release": "^15.0.2",
     "@semantic-release/git": "^4.0.0",
     "@semantic-release/github": "^4.2.8",
     "@semantic-release/npm": "^3.2.2"
@@ -63,7 +64,9 @@
     "semantic-release": "semantic-release"
   },
   "release": {
-    "branches": ["master"],
+    "branches": [
+      "master"
+    ],
     "verifyConditions": [
       "@semantic-release/github",
       "@semantic-release/git"
