@@ -1,7 +1,8 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Riptide Software Inc.
+ * Copyright (c) 2014-2016 Riptide Software Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +23,18 @@
  * SOFTWARE.
  */
 (function (chai, chaiAsPromised, Promise, S3FS) {
-    'use strict';
     var expect = chai.expect;
 
     chai.use(chaiAsPromised);
     chai.config.includeStack = true;
 
     describe('S3FS Buckets', function () {
-        var s3Credentials,
-            bucketName,
+        var bucketName,
             s3fsImpl;
 
-        before(function () {
-            if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_KEY) {
-                throw new Error('Both an AWS Access Key ID and Secret Key are required');
-            }
-        });
-
         beforeEach(function () {
-            s3Credentials = {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_KEY,
-                region: process.env.AWS_REGION
-            };
             bucketName = 's3fs-bucket-test-bucket-' + (Math.random() + '').slice(2, 8);
-            s3fsImpl = new S3FS(bucketName, s3Credentials);
+            s3fsImpl = new S3FS(bucketName);
         });
 
         afterEach(function (done) {
@@ -78,7 +66,7 @@
             // See: http://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html
             //TODO: Even though this is an invalid bucketname the AWS SDK still lets you create it.
             var bucketMaxLength = 64;
-            s3fsImpl = new S3FS(new Array(bucketMaxLength).join('asdf'), s3Credentials);
+            s3fsImpl = new S3FS(new Array(bucketMaxLength).join('asdf'));
             return expect(s3fsImpl.create()).to.eventually.be.rejectedWith('asdf');
         });
 

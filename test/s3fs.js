@@ -1,7 +1,8 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Riptide Software Inc.
+ * Copyright (c) 2014-2016 Riptide Software Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software'), to deal
@@ -22,29 +23,20 @@
  * SOFTWARE.
  */
 (function (chai, chaiAsPromised, S3FS) {
-    'use strict';
     var expect = chai.expect;
 
     chai.use(chaiAsPromised);
     chai.config.includeStack = true;
 
     describe('S3FS Instances', function () {
-        var s3Credentials,
+        var bucketNamePrefix = 's3fs-clone-test-bucket-',
             bucketName,
             bucketS3fsImpl,
             s3fsImpl;
 
         before(function () {
-            if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_KEY) {
-                throw new Error('Both an AWS Access Key ID and Secret Key are required');
-            }
-            s3Credentials = {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.AWS_SECRET_KEY,
-                region: process.env.AWS_REGION
-            };
-            bucketName = 's3fs-clone-test-bucket-' + (Math.random() + '').slice(2, 8);
-            s3fsImpl = new S3FS(bucketName, s3Credentials);
+            bucketName = bucketNamePrefix + (Math.random() + '').slice(2, 8);
+            s3fsImpl = new S3FS(bucketName);
 
             return s3fsImpl.create();
         });
@@ -92,8 +84,23 @@
 
         it('shouldn\'t be able to instantiate S3FS without a secretAccessKey', function () {
             return expect(function () {
-                S3FS('bucket', {accessKeyId: 'test'});
+                S3FS('bucket', { accessKeyId: 'test' });
             }).to.not.throw();
+        });
+
+        it('should be able to retrieve bucket/path/imAClone', function () {
+            var path = s3fsImpl.getPath('imAClone');
+            return expect(path).to.contain(bucketNamePrefix).to.contain('imAClone');
+        });
+
+        it('should not retrieve bucket/path with undefined', function () {
+            var path = s3fsImpl.getPath(undefined);
+            return expect(path).to.contain(bucketNamePrefix).not.contain('undefined');
+        });
+
+        it('should not retrieve bucket/path with null', function () {
+            var path = s3fsImpl.getPath(null);
+            return expect(path).to.contain(bucketNamePrefix).not.contain('null');
         });
 
         it('should be able to clone s3fs', function () {
@@ -102,14 +109,14 @@
 
         it('should be able to clone s3fs then read a file', function () {
             return expect(bucketS3fsImpl.writeFile('imAClone/test-file.json', '{ "test": "test" }')
-                    .then(function () {
-                        var s3fsClone = bucketS3fsImpl.clone('imAClone');
-                        return s3fsClone.readFile('test-file.json');
-                    })
+                .then(function () {
+                    var s3fsClone = bucketS3fsImpl.clone('imAClone');
+                    return s3fsClone.readFile('test-file.json');
+                })
             ).to.eventually.satisfy(function (file) {
-                    expect(file.Body.toString()).to.be.equal('{ "test": "test" }');
-                    return true;
-                });
+                expect(file.Body.toString()).to.be.equal('{ "test": "test" }');
+                return true;
+            });
         });
 
     });

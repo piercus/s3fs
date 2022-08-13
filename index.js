@@ -1,7 +1,8 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Riptide Software Inc.
+ * Copyright (c) 2014-2016 Riptide Software Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +23,5 @@
  * SOFTWARE.
  */
 (function (module, s3fs) {
-    'use strict';
     module.exports = s3fs;
 }(module, require('./lib/s3fs')));

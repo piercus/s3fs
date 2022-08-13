@@ -1,7 +1,8 @@
+'use strict';
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Riptide Software Inc.
+ * Copyright (c) 2014-2016 Riptide Software Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -22,7 +23,6 @@
  * SOFTWARE.
  */
 (function (chai, chaiAsPromised, fsUtils) {
-    'use strict';
     var expect = chai.expect;
 
     chai.use(chaiAsPromised);

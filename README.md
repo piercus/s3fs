@@ -1,13 +1,13 @@
 # S3FS
 [![npm](https://img.shields.io/npm/v/s3fs.svg)](https://www.npmjs.com/package/s3fs)
 [![npm](https://img.shields.io/npm/dm/s3fs.svg)](https://www.npmjs.com/package/s3fs)
-[![Build Status](https://travis-ci.org/RiptideCloud/s3fs.svg?branch=master)](https://travis-ci.org/RiptideCloud/s3fs)
-[![Coverage Status](https://img.shields.io/coveralls/RiptideCloud/s3fs.svg)](https://coveralls.io/r/RiptideCloud/s3fs)
+[![Build Status](https://travis-ci.org/RiptideElements/s3fs.svg?branch=master)](https://travis-ci.org/RiptideElements/s3fs)
+[![Coverage Status](https://img.shields.io/coveralls/RiptideElements/s3fs.svg)](https://coveralls.io/r/RiptideElements/s3fs)
 [![Codacy](https://img.shields.io/codacy/13e0385fd6fc4929a2d1a974c7d0d67f.svg)](https://www.codacy.com/public/davidtpate/s3fs)
-[![Code Climate](https://codeclimate.com/github/RiptideCloud/s3fs/badges/gpa.svg)](https://codeclimate.com/github/RiptideCloud/s3fs)
-[![David](https://img.shields.io/david/RiptideCloud/s3fs.svg)](https://david-dm.org/RiptideCloud/s3fs)
-[![David](https://img.shields.io/david/dev/RiptideCloud/s3fs.svg)](https://david-dm.org/RiptideCloud/s3fs)
-[![David](https://img.shields.io/david/peer/RiptideCloud/s3fs.svg)](https://david-dm.org/RiptideCloud/s3fs)
+[![Code Climate](https://codeclimate.com/github/RiptideElements/s3fs/badges/gpa.svg)](https://codeclimate.com/github/RiptideElements/s3fs)
+[![David](https://img.shields.io/david/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
+[![David](https://img.shields.io/david/dev/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
+[![David](https://img.shields.io/david/peer/RiptideElements/s3fs.svg)](https://david-dm.org/RiptideElements/s3fs)
 
 Implementation of Node.JS [FS interface](http://nodejs.org/api/fs.html) using [Amazon Simple Storage Service (S3)](http://aws.amazon.com/s3/) for storage.
 
@@ -63,6 +63,30 @@ The methods below from Node.JS's [FS interface](http://nodejs.org/api/fs.html) a
 matching the signature and functionality of the `fs` module. All of the methods support either usage through callbacks
 or promises. There isn't any support for synchronous actions currently as there isn't a need.
 
+* [fs.createReadStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+* [fs.createWriteStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options)
+* [fs.exists(path, callback)](http://nodejs.org/api/fs.html#fs_fs_exists_path_callback)
+* [fs.stat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_stat_path_callback)
+* [fs.lstat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_lstat_path_callback)
+* [fs.mkdir(path, [mode], callback)](http://nodejs.org/api/fs.html#fs_fs_mkdir_path_mode_callback)
+* [fs.readdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback)
+* [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback)
+* [fs.rmdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_rmdir_path_callback)
+* [fs.unlink(path, callback)](http://nodejs.org/api/fs.html#fs_fs_unlink_path_callback)
+* [fs.writeFile(filename, data, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_writefile_filename_data_options_callback)
+
+### Constructor Details
+Creating an instance of `S3fs` takes in the `bucketPath` and `options` which are passed on to the [S3 constructor](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property).
+
+```js
+var bucketPath = 'mySuperCoolBucket';
+var s3Options = {
+  region: 'us-east-1',
+  
+};
+var fsImpl = new S3FS(bucketPath, s3Options);
+```
+
 ### Example Callback Usage
 ```js
 var S3FS = require('s3fs');
@@ -84,21 +108,26 @@ fsImpl.writeFile('message.txt', 'Hello Node').then(function() {
 });
 ```
 
-* [fs.createReadStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
-* [fs.createWriteStream(path, [options])](http://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options)
-* [fs.exists(path, callback)](http://nodejs.org/api/fs.html#fs_fs_exists_path_callback)
-* [fs.stat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_stat_path_callback)
-* [fs.lstat(path, callback)](http://nodejs.org/api/fs.html#fs_fs_lstat_path_callback)
-* [fs.mkdir(path, [mode], callback)](http://nodejs.org/api/fs.html#fs_fs_mkdir_path_mode_callback)
-* [fs.readdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback)
-* [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback)
-* [fs.rmdir(path, callback)](http://nodejs.org/api/fs.html#fs_fs_rmdir_path_callback)
-* [fs.unlink(path, callback)](http://nodejs.org/api/fs.html#fs_fs_unlink_path_callback)
-* [fs.writeFile(filename, data, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_writefile_filename_data_options_callback)
-
 ## Custom Supported Methods
 Besides the methods from Node.JS's [FS interface](http://nodejs.org/api/fs.html) we also support some custom expansions
 to the interface providing various methods such as recursive methods and S3 specific methods. They are described below.
+
+### s3fs.getPath(path)
+Provides a location by concatenating the bucket with path(s).
+
+* path `String`. _Optional_. The relative path to the working directory or file
+
+```js
+ // Create an instance of S3FS which has a current working directory of `test-folder` within the S3 bucket `test-bucket`
+ var fsImpl = new S3FS('test-bucket/test-folder', options);
+ 
+ // Returns location to directory `test-bucket/test-folder/styles
+ var fsImplStyles = fsImpl.getPath('styles');
+ // Returns location to file `test-bucket/test-folder/styles/main.css
+ var fsImplStyles = fsImpl.getPath('styles/main.css');
+ // Returns location to file `test-bucket/test-folder
+ var fsImplStyles = fsImpl.getPath();
+```
 
 ### s3fs.clone(path)
 Provides a clone of the instance of S3FS which has relative access to the specified directory.
@@ -112,18 +141,20 @@ var fsImpl = new S3FS('test-bucket/test-folder', options);
 var fsImplStyles = fsImpl.clone('styles');
 ```
 
-### s3fs.copyFile(sourcePath, destinationPath[, callback])
+### s3fs.copyFile(sourcePath, destinationPath[, options, callback])
 Allows a file to be copied from one path to another path within the same bucket. Paths are relative to
 the bucket originally provided.
 
 * sourceFile `String`. **Required**. Relative path to the source file
 * destinationFile `String`. **Required**. Relative path to the destination file
+* options `Object`. _Optional_. The options to be used when copying the file. See [AWS SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#copyObject-property)
 * callback `Function`. _Optional_. Callback to be used, if not provided will return a Promise
 
 ```js
 var fsImpl = new S3FS('test-bucket', options);
-fsImpl.copyFile('test-folder/test-file.txt', 'other-folder/test-file.txt').then(function() {
+fsImpl.copyFile('test-folder/test-file.txt', 'other-folder/test-file.txt').then(function(data) {
   // File was successfully copied
+  // Data contains details such as the `ETag` about the object. See [AWS SDK](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#copyObject-property) for details.
 }, function(reason) {
   // Something went wrong
 });
@@ -230,7 +261,7 @@ Adds/Updates a lifecycle on a bucket.
 * callback `Function`. _Optional_. Callback to be used, if not provided will return a Promise
 
 ```js
-var fsImpl = new S3FS(options, 'test-bucket');
+var fsImpl = new S3FS('test-bucket', options);
 // Remove the Cached contents in the `/cache` directory each day.
 fsImpl.putBucketLifecycle('expire cache', 'cache', 1).then(function() {
   // Bucket Lifecycle was successfully added/updated
@@ -317,4 +348,4 @@ Additionally, an interactive HTML report will be generated in `./coverage/lcov-r
 [MIT](LICENSE)
 
 ## Copyright
-> Copyright (c) 2014 Riptide Software Inc.
+> Copyright (c) 2015 Riptide Software Inc.
