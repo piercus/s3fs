@@ -616,7 +616,7 @@
                                 return reject(err);
                             }
 
-                            resolve(data.Body);
+                            resolve(data);
                         });
                     });
                 })
