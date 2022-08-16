@@ -114,7 +114,7 @@
         });
 
         it('should be able to write a file from a string', function () {
-            return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }')).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }')).to.eventually.be.fulfilled;
         });
 
         it('shouldn\'t be able to write a file with invalid options', function () {
@@ -122,7 +122,7 @@
         });
 
         it('should be able to write a file with only encoding from a string', function () {
-            return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }', 'utf8')).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-file.json', '{ "test": "test" }', 'utf8')).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a file from a string with a callback', function () {
@@ -133,7 +133,7 @@
                     }
                     resolve(data);
                 });
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a large file', function () {
@@ -146,7 +146,7 @@
                 });
 
             });
-            return expect(promise).to.eventually.be.fulfilled();
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it('shouldn\'t be able to read a file with invalid options', function () {
@@ -192,7 +192,7 @@
                 });
 
             });
-            return expect(promise).to.eventually.be.fulfilled();
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it('should be able to tell if a file exists', function () {
@@ -200,7 +200,7 @@
                 .then(function () {
                     return bucketS3fsImpl.exists('test-exists.json');
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.be.fulfilled;
         });
 
         it('should be able to tell if a file exists with a callback', function () {
@@ -222,7 +222,7 @@
                         expect(data.ETag).to.equal(data.CopyObjectResult.ETag);
                         expect(data.CopyObjectResult.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
                         expect(data.LastModified).to.equal(data.CopyObjectResult.LastModified);
-                        expect(data.CopyObjectResult.LastModified).to.be.ok();
+                        expect(data.CopyObjectResult.LastModified).to.be.ok;
                         return true;
                     });
                 })
@@ -260,7 +260,7 @@
                 expect(data.ETag).to.equal(data.CopyObjectResult.ETag);
                 expect(data.CopyObjectResult.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
                 expect(data.LastModified).to.equal(data.CopyObjectResult.LastModified);
-                expect(data.CopyObjectResult.LastModified).to.be.ok();
+                expect(data.CopyObjectResult.LastModified).to.be.ok;
                 return true;
             });
         });
@@ -287,10 +287,10 @@
                 })
             ).to.eventually.satisfy(function(data) {
                 expect(data.AcceptRanges).to.equal('bytes');
-                expect(data.ContentLength).to.equal('2');
+                expect(data.ContentLength).to.equal(2);
                 expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
                 expect(data.ContentType).to.equal('application/octet-stream');
-                expect(data.LastModified).to.be.ok();
+                expect(data.LastModified).to.be.ok;
                 return true;
             });
         });
@@ -303,10 +303,10 @@
                 })
             ).to.eventually.satisfy(function(data) {
                 expect(data.AcceptRanges).to.equal('bytes');
-                expect(data.ContentLength).to.equal('2');
+                expect(data.ContentLength).to.equal(2);
                 expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
                 expect(data.ContentType).to.equal('application/octet-stream');
-                expect(data.LastModified).to.be.ok();
+                expect(data.LastModified).to.be.ok;
                 return true;
             });
         });
@@ -325,10 +325,10 @@
                 })
             ).to.eventually.satisfy(function(data) {
                 expect(data.AcceptRanges).to.equal('bytes');
-                expect(data.ContentLength).to.equal('2');
+                expect(data.ContentLength).to.equal(2);
                 expect(data.ETag).to.equal('"99914b932bd37a50b983c5e7c90ae93b"');
                 expect(data.ContentType).to.equal('application/octet-stream');
-                expect(data.LastModified).to.be.ok();
+                expect(data.LastModified).to.be.ok;
                 return true;
             });
         });
@@ -368,7 +368,7 @@
                         });
                     });
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.be.fulfilled;
         });
 
         it('shouldn\'t be able to write a file from an object', function () {
@@ -396,7 +396,7 @@
                 });
 
             });
-            return expect(promise).to.eventually.be.fulfilled();
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a file from a buffer with a callback', function () {
@@ -416,12 +416,12 @@
                 });
 
             });
-            return expect(promise).to.eventually.be.fulfilled();
+            return expect(promise).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a file from a stream', function () {
             var stream = fs.createReadStream('./test/mock/example-file.json');
-            return expect(bucketS3fsImpl.writeFile('test-stream.json', stream)).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-stream.json', stream)).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a file from a stream with a callback', function () {
@@ -433,12 +433,12 @@
                     }
                     resolve(data);
                 });
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a large file from a stream', function () {
             var stream = fs.createReadStream('./test/mock/large-file.txt');
-            return expect(bucketS3fsImpl.writeFile('test-large-stream.txt', stream)).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-large-stream.txt', stream)).to.eventually.be.fulfilled;
         });
 
         it('should be able to write a large file from a stream with a callback', function () {
@@ -450,7 +450,7 @@
                     }
                     resolve(data);
                 });
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it('should be able to pipe a file from a stream', function () {
@@ -472,7 +472,7 @@
                     });
                 fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
 
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it('should be able to pipe a small file from a stream with options', function () {
@@ -548,12 +548,12 @@
 
                 fileReadStream.pipe(calculateBytesWritten).pipe(s3fsWriteStream);
 
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it.skip('should be able to write a file from a blob', function () {
             //TODO: Get this setup
-            return expect(bucketS3fsImpl.writeFile('test-blobl.json', {test: 'test'})).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-blobl.json', {test: 'test'})).to.eventually.be.fulfilled;
         });
 
         it.skip('should be able to write a file from a blob with a callback', function () {
@@ -565,12 +565,12 @@
                     }
                     resolve(data);
                 });
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it.skip('should be able to write a file from a typed array', function () {
             //TODO: Get this setup
-            return expect(bucketS3fsImpl.writeFile('test-typed.json', {test: 'test'})).to.eventually.be.fulfilled();
+            return expect(bucketS3fsImpl.writeFile('test-typed.json', {test: 'test'})).to.eventually.be.fulfilled;
         });
 
         it.skip('should be able to write a file from a typed array with a callback', function () {
@@ -582,7 +582,7 @@
                     }
                     resolve(data);
                 });
-            })).to.eventually.be.fulfilled();
+            })).to.eventually.be.fulfilled;
         });
 
         it('should be able to read a file as a stream', function () {
@@ -603,7 +603,7 @@
                             });
                     });
                 })
-            ).to.eventually.be.fulfilled();
+            ).to.eventually.be.fulfilled;
         });
 
         it('should be able to read a file with a callback', function () {
@@ -616,7 +616,7 @@
                                 return reject(err);
                             }
 
-                            resolve(data);
+                            resolve(data.Body);
                         });
                     });
                 })
@@ -666,7 +666,7 @@
                     return bucketS3fsImpl.stat('test-stat.json');
                 })
             ).to.eventually.satisfy(function (stats) {
-                expect(stats.isFile()).to.be.true();
+                expect(stats.isFile()).to.be.true;
                 return true;
             });
         });
@@ -684,7 +684,7 @@
                     });
                 })
             ).to.eventually.satisfy(function (stats) {
-                expect(stats.isFile()).to.be.true();
+                expect(stats.isFile()).to.be.true;
                 return true;
             });
         });
@@ -710,7 +710,7 @@
                     return bucketS3fsImpl.lstat('test-lstat.json');
                 })
             ).to.eventually.satisfy(function (stats) {
-                expect(stats.isFile()).to.be.true();
+                expect(stats.isFile()).to.be.true;
                 return true;
             });
         });
@@ -728,7 +728,7 @@
                     });
                 })
             ).to.eventually.satisfy(function (stats) {
-                expect(stats.isFile()).to.be.true();
+                expect(stats.isFile()).to.be.true;
                 return true;
             });
         });

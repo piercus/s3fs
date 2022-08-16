@@ -35,11 +35,15 @@
   "main": "index.js",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.129.0",
+    "@aws-sdk/s3-request-presigner": "^3.145.0",
     "bluebird": "^3.5.5",
     "extend": "~3.x"
   },
   "devDependencies": {
-    "buddy.js": "~0.x",
+    "@semantic-release/git": "^4.0.0",
+    "@semantic-release/github": "^4.2.8",
+    "@semantic-release/npm": "^3.2.2",
+    "buddy.js": "^0.9.3",
     "chai": "~3.x",
     "chai-as-promised": "~6.0.0",
     "dirty-chai": "~1.2.2",
@@ -49,11 +53,8 @@
     "jsinspect": "~0.x",
     "mocha": "~3.1.2",
     "nsp": "~2.6.2",
-    "through2": "~2.x",
     "semantic-release": "^15.0.2",
-    "@semantic-release/git": "^4.0.0",
-    "@semantic-release/github": "^4.2.8",
-    "@semantic-release/npm": "^3.2.2"
+    "through2": "~2.x"
   },
   "scripts": {
     "lint": "eslint . && jscs . && jsinspect . && buddy --detect-objects index.js ./lib",
